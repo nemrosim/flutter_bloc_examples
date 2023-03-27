@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bloc_examples/pages/timer/timer.dart';
 import 'bloc/counter/counter_cubit.dart';
 import 'bloc/counter/counter_observer.dart';
 import 'pages/counter/counter.dart';
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
       ),
       home: BlocProvider(
         create: (BuildContext context) => CounterCubit(),
-        child: const CounterPage(),
+        child: const TimerPage(),
       ),
     );
   }
