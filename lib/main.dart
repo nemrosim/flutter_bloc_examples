@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'bloc/counter_cubit.dart';
-import 'bloc/counter_observer.dart';
+import 'bloc/counter/counter_cubit.dart';
+import 'bloc/counter/counter_observer.dart';
 import 'pages/Counter/counter.dart';
 
 void main() {
