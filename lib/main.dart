@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'bloc/counter/counter_cubit.dart';
 import 'bloc/counter/counter_observer.dart';
-import 'pages/Counter/counter.dart';
+import 'pages/counter/counter.dart';
 
 void main() {
   Bloc.observer = const CounterObserver();
