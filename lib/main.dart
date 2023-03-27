@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'bloc/counter_cubit.dart';
 import 'pages/Counter/counter.dart';
 
 void main() {
@@ -16,7 +17,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.amber,
       ),
-      home: const CounterPage(),
+      home: BlocProvider(
+        create: (BuildContext context) => CounterCubit(),
+        child: const CounterPage(),
+      ),
     );
   }
 }
