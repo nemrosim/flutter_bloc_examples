@@ -1,6 +1,8 @@
 class TimerState {
-  const TimerState(this.duration);
   final int duration;
+  final bool isInProgress;
+
+  TimerState({required this.duration, required this.isInProgress});
 
   @override
   String toString() {

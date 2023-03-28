@@ -8,6 +8,6 @@ class CounterObserver extends BlocObserver {
     super.onChange(bloc, change);
 
     // ignore: avoid_print
-    print('${bloc.runtimeType} $change');
+    print('Value changed ${change.nextState}');
   }
 }

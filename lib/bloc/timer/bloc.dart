@@ -5,17 +5,21 @@ import 'event.dart';
 import 'state.dart';
 import 'timer_stream.dart';
 
+const int defaultTimerDuration = 5;
+
 class TimerBloc extends Bloc<TimerEvent, TimerState> {
   final TimerStream _timer;
-  static const int _duration = 5;
 
   StreamSubscription<int>? _timerSubscription;
 
   TimerBloc({required TimerStream timer})
       : this._timer = timer,
-        super(const TimerState(_duration)) {
+        super(TimerState(duration: defaultTimerDuration, isInProgress: false)) {
     on<TimerStarted>(_onStarted);
     on<TimerTicked>(_onTicked);
+    on<TimerPaused>(_onPaused);
+    on<TimerResumed>(_onResumed);
+    on<TimerReset>(_onReset);
   }
 
   @override
@@ -25,19 +29,34 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
   }
 
   void _onStarted(TimerStarted event, Emitter<TimerState> emit) {
-
-    emit(TimerState(event.duration));
+    emit(TimerState(duration: state.duration, isInProgress: true));
 
     _timerSubscription?.cancel();
     _timerSubscription = _timer
-        .getStream(ticks: event.duration) // start stream
+        .getStream(ticks: state.duration) // start stream
         .listen(
           // when value changes -> add TimerTicked event
-          (duration) => add(TimerTicked(duration: duration)),
+          (value) => add(TimerTicked(duration: value)),
         );
   }
 
   void _onTicked(TimerTicked event, Emitter<TimerState> emit) {
-    emit(TimerState(event.duration));
+    emit(TimerState(duration: event.duration, isInProgress: true));
+  }
+
+  void _onPaused(TimerPaused event, Emitter<TimerState> emit) {
+    _timerSubscription?.pause();
+    emit(TimerState(duration: state.duration, isInProgress: false));
+  }
+
+  void _onResumed(TimerResumed event, Emitter<TimerState> emit) {
+    _timerSubscription?.resume();
+    emit(TimerState(duration: state.duration, isInProgress: true));
+  }
+
+  void _onReset(TimerReset event, Emitter<TimerState> emit) {
+    _timerSubscription?.cancel();
+
+    emit(TimerState(duration: defaultTimerDuration, isInProgress: false));
   }
 }

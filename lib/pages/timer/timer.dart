@@ -11,6 +11,7 @@ class TimerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TimerBloc, TimerState>(
+        buildWhen: (prev, next) => prev != next,
         builder: (context, state) {
           return Scaffold(
             appBar: AppBar(title: const Text('Timer')),
@@ -29,18 +30,50 @@ class TimerPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                FloatingActionButton(
-                    child: const Icon(Icons.play_arrow),
-                    onPressed: () {
-                      context
-                          .read<TimerBloc>()
-                          .add(TimerStarted(duration: state.duration));
-                    }),
+                Builder(builder: (context) {
+                  if (state.isInProgress && state.duration == 0) {
+                    return const SizedBox.shrink();
+                  }
+
+                  IconData iconData = Icons.play_arrow;
+                  void Function() func = () {
+                    context.read<TimerBloc>().add(TimerStarted());
+                  };
+
+                  if (state.isInProgress) {
+                    iconData = Icons.pause;
+                    func = () {
+                      context.read<TimerBloc>().add(TimerPaused());
+                    };
+                  }
+
+                  if (!state.isInProgress &&
+                      state.duration != defaultTimerDuration) {
+                    iconData = Icons.pause;
+                    func = () {
+                      context.read<TimerBloc>().add(TimerResumed());
+                    };
+                  }
+
+                  return FloatingActionButton(
+                    onPressed: func,
+                    child: Icon(iconData),
+                  );
+                }),
                 const SizedBox(height: 20),
-                FloatingActionButton(
-                  child: const Icon(Icons.pause),
-                  onPressed: () {},
-                ),
+                Builder(builder: (context) {
+                  if (!state.isInProgress &&
+                      (state.duration == defaultTimerDuration ||
+                          state.duration == 0)) {
+                    return const SizedBox.shrink();
+                  }
+
+                  return FloatingActionButton(
+                    onPressed: () =>
+                        context.read<TimerBloc>().add(TimerReset()),
+                    child: const Icon(Icons.replay),
+                  );
+                }),
               ],
             ),
           );
