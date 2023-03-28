@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../bloc/counter/cubit/counter_cubit.dart';
+import '../../bloc/counter/bloc/counter_bloc.dart';
+import '../../bloc/counter/bloc/counter_event.dart';
 
 class CounterBlocPage extends StatelessWidget {
   const CounterBlocPage({super.key});
@@ -12,7 +13,7 @@ class CounterBlocPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Counter')),
       body: Center(
-        child: BlocBuilder<CounterCubit, int>(
+        child: BlocBuilder<CounterBloc, int>(
           builder: (context, state) => Text(
             '$state',
             style: Theme.of(context).textTheme.displayMedium,
@@ -25,12 +26,12 @@ class CounterBlocPage extends StatelessWidget {
         children: [
           FloatingActionButton(
             child: const Icon(Icons.add),
-            onPressed: () => context.read<CounterCubit>().increment(),
+            onPressed: () => context.read<CounterBloc>().add(CounterIncrementPressed()),
           ),
           const SizedBox(height: 20),
           FloatingActionButton(
             child: const Icon(Icons.remove),
-            onPressed: () => context.read<CounterCubit>().decrement(),
+            onPressed: () => context.read<CounterBloc>().add(CounterDecrementPressed()),
           ),
         ],
       ),

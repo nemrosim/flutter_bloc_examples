@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../bloc/counter/counter_cubit.dart';
+import '../../bloc/counter/cubit/counter_cubit.dart';
 
-class CounterPage extends StatelessWidget {
-  const CounterPage({super.key});
+class CounterCubitPage extends StatelessWidget {
+  const CounterCubitPage({super.key});
 
   @override
   Widget build(BuildContext context) {
