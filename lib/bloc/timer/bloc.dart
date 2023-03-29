@@ -5,7 +5,7 @@ import 'event.dart';
 import 'state.dart';
 import 'timer_stream.dart';
 
-const int defaultTimerDuration = 5;
+const int defaultTimerDuration = 60;
 
 class TimerBloc extends Bloc<TimerEvent, TimerState> {
   final TimerStream _timer;
